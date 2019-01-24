@@ -311,6 +311,34 @@ void disable_all_steppers() {
   disable_e_steppers();
 }
 
+#if HAS_ACTION_COMMANDS
+
+  void host_action(const char * const pstr) {
+    SERIAL_ECHOPGM("//action:");
+    SERIAL_ECHOLN(pstr);
+  }
+
+  #ifdef ACTION_ON_KILL
+    void host_action_kill() { host_action(PSTR(ACTION_ON_KILL)); }
+  #endif
+  #ifdef ACTION_ON_PAUSE
+    void host_action_pause() { host_action(PSTR(ACTION_ON_PAUSE)); }
+  #endif
+  #ifdef ACTION_ON_PAUSED
+    void host_action_paused() { host_action(PSTR(ACTION_ON_PAUSED)); }
+  #endif
+  #ifdef ACTION_ON_RESUME
+    void host_action_resume() { host_action(PSTR(ACTION_ON_RESUME)); }
+  #endif
+  #ifdef ACTION_ON_RESUMED
+    void host_action_resumed() { host_action(PSTR(ACTION_ON_RESUMED)); }
+  #endif
+  #ifdef ACTION_ON_CANCEL
+    void host_action_cancel() { host_action(PSTR(ACTION_ON_CANCEL)); }
+  #endif
+
+#endif // HAS_ACTION_COMMANDS
+
 /**
  * Manage several activities:
  *  - Check for Filament Runout
@@ -618,7 +646,7 @@ void kill(PGM_P const lcd_msg/*=NULL*/) {
   #endif
 
   #ifdef ACTION_ON_KILL
-    SERIAL_ECHOLNPGM("//action:" ACTION_ON_KILL);
+    host_action_kill();
   #endif
 
   minkill();

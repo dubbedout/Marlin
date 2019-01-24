@@ -369,3 +369,25 @@ void protected_pin_err();
 #if HAS_SUICIDE
   inline void suicide() { OUT_WRITE(SUICIDE_PIN, LOW); }
 #endif
+
+#if HAS_ACTION_COMMANDS
+  void host_action();
+  #ifdef ACTION_ON_KILL
+    void host_action_kill();
+  #endif
+  #ifdef ACTION_ON_PAUSE
+    void host_action_pause();
+  #endif
+  #ifdef ACTION_ON_PAUSED
+    void host_action_paused();
+  #endif
+  #ifdef ACTION_ON_RESUME
+    void host_action_resume();
+  #endif
+  #ifdef ACTION_ON_RESUMED
+    void host_action_resumed();
+  #endif
+  #ifdef ACTION_ON_CANCEL
+    void host_action_cancel();
+  #endif
+#endif
