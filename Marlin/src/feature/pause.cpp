@@ -108,6 +108,9 @@ static bool ensure_safe_temperature(const AdvancedPauseMode mode=ADVANCED_PAUSE_
 }
 
 void do_pause_e_move(const float &length, const float &fr) {
+  #if ENABLED(FILAMENT_RUNOUT_SENSOR)
+    runout.reset();
+  #endif
   current_position[E_AXIS] += length / planner.e_factor[active_extruder];
   planner.buffer_line(current_position, fr, active_extruder);
   planner.synchronize();
@@ -446,10 +449,6 @@ void wait_for_confirmation(const bool is_reload/*=false*/, const int8_t max_beep
   // Wait for filament insert by user and press button
   KEEPALIVE_STATE(PAUSED_FOR_USER);
   wait_for_user = true;    // LCD click or M108 will clear this
-
-  #if ENABLED(FILAMENT_RUNOUT_SENSOR)
-    runout.reset();
-  #endif
 
   while (wait_for_user) {
     #if HAS_BUZZER
